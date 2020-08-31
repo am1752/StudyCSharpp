@@ -1,0 +1,116 @@
+﻿<mah:MetroWindow    x:Class="TestApp.Views.ShellView"
+                    xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"  
+                    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:winformchart="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+                    xmlns:local="clr-namespace:TestApp"
+                    xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
+                    mc:Ignorable="d"
+                    Title="HI!!" Height="700" Width="800"
+                    Loaded="MetroWindow_Loaded">
+
+    <Window.InputBindings>
+        <KeyBinding Command="ApplicationCommands.Open"
+              Modifiers="Control" Key="O" />
+        <KeyBinding Command="ApplicationCommands.Save"
+              Modifiers="Control" Key="S" />
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Arduino PhotoRegister" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            <Menu Grid.Row="1">
+                <MenuItem  Header="파일">
+                    <MenuItem  Header="열기" HorizontalAlignment="Center"  InputGestureText="Ctrl+O"/>
+                    <MenuItem  Header="저장" HorizontalAlignment="Center"  InputGestureText="Ctrl+S"/>
+                    <Separator/>
+                    <MenuItem Header="끝내기" HorizontalAlignment="Center"  InputGestureText="Alt+F4" Click="MenuItem_CLOSE" />
+                </MenuItem>
+                <MenuItem  Header="시뮬레이션" >
+                    <MenuItem Header="시작"  Click="MenuSubItemStart" InputGestureText="Alt+S" IsCheckable="True"/>
+                    <MenuItem Header="정지" Click="MenuItem_Click" InputGestureText="Alt+T" IsCheckable="True"/>
+                </MenuItem>
+                <MenuItem  Header="도움말">
+                    <MenuItem x:Name="Info" Header="정보.." Click="MenuItem_Click_1" IsCheckable="True"/>
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="LblConnectionTime" Grid.Row="0" Grid.Column="0"  Text="연결시간 : " VerticalAlignment="Center" FontSize="15"/>
+            <TextBox Name="TxtSensorCount" Grid.Row="0" Grid.Column="1" Background="LightGray"/>
+            <GroupBox Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" 
+                      Header="포토 레지스터" Style="{StaticResource MahApps.Styles.GroupBox}"
+                      Height="80">
+                <StackPanel>
+                    <ProgressBar  x:Name="PgbPhotoRegistor" Height="20" Margin="5"/>
+                    <TextBlock  Name="LblPhotoRegistor" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30"/>
+                </StackPanel>
+            </GroupBox>
+            <TextBox Name="Txt"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="LightGray"/>
+            <GroupBox Grid.RowSpan="5" Grid.Column="2" Header="포트" Margin="5">
+                <StackPanel>
+                    <ComboBox Name="CboSerialPort" Margin="10" SelectionChanged="CboSerialPort_SelectionChanged"/>
+                    <Button Name="BtnConnect" Content="CONNECT" Background="Red" Margin="3" Height="20" Click="BtnConnect_Click_1"/>
+                    <Button Name="BtnDisconnect"  Content="DISCONNECT" Background="Red" Margin="2" Height="20" Click="BtnDisconnect_Click"/>
+                    <Button Name="BtnPortValue"  Content="PORT" Background="Red" Margin="3" Height="60"
+                            VerticalAlignment="Center"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="btn_ViewAll" Grid.Row="1" Content="VIEWALL" Background="Red" Margin="10" Width="100" HorizontalAlignment="Center" Click="Button_Click"/>
+                    <Button Name="btn_Zoom" Grid.Row="1" Content="ZOOM" Background="Red" Margin="10" Width="100" HorizontalAlignment="Center" Click="btn_Zoom_Click"/>
+                </StackPanel>
+            </Border>
+            <WindowsFormsHost Grid.ColumnSpan="2">
+                <winformchart:Chart x:Name="MyWinformChart">
+                    <winformchart:Chart.Series>
+                        <winformchart:Series Name="chtsensorvalues" ChartType="Line"/>
+                    </winformchart:Chart.Series>
+                    <winformchart:Chart.ChartAreas>
+                        <winformchart:ChartArea/>
+                    </winformchart:Chart.ChartAreas>
+                </winformchart:Chart>
+            </WindowsFormsHost>
+            
+        </Grid>
+    </Grid>
+</mah:MetroWindow>

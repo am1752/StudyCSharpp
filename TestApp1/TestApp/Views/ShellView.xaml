@@ -1,0 +1,155 @@
+﻿<mah:MetroWindow    x:Class="TestApp.Views.ShellView"
+                    xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"  
+                    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform.Core"
+                    xmlns:winformchart="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+                    xmlns:local="clr-namespace:TestApp"
+                    xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF" 
+                    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+                    mc:Ignorable="d"
+                    Title="HI!!" Height="700" Width="800"
+                    Loaded="MetroWindow_Loaded">
+    <mah:MetroWindow.Resources>
+        <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer.RenderTransform>
+                                <ScaleTransform ScaleY="-1"/>
+                            </ScrollViewer.RenderTransform>
+                            <TextBox Text="{TemplateBinding Text}" RenderTransformOrigin="0.5,0.5">
+                                <TextBox.RenderTransform>
+                                    <ScaleTransform ScaleY="-1"/>
+                                </TextBox.RenderTransform>
+                            </TextBox>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+    
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding sim_Start_Command}"
+              Modifiers="Alt" Key="s" />
+        <KeyBinding Command="{Binding sim_Stop_Command}"
+              Modifiers="Alt" Key="t" />
+    </Window.InputBindings>
+
+    
+   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="Arduino PhotoRegister" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+            <Menu Grid.Row="1">
+                <MenuItem  Header="파일">
+                    <MenuItem  Header="열기" HorizontalAlignment="Center"  InputGestureText="Ctrl+O" />
+                    <MenuItem  Header="저장" HorizontalAlignment="Center"  InputGestureText="Ctrl+S" />
+                    <Separator/>
+                    <MenuItem Header="끝내기" HorizontalAlignment="Center"  InputGestureText="Alt+F4" x:Name="MenuClose" />
+                </MenuItem>
+                <MenuItem  Header="시뮬레이션" >
+                    <MenuItem Header="시작"  x:Name="MenuConnect" InputGestureText="Alt+S" />
+                    <MenuItem Header="정지" x:Name="MenuDisConnect" InputGestureText="Alt+T" IsCheckable="True"/>
+                </MenuItem>
+                <MenuItem  Header="도움말" >
+                    <MenuItem x:Name="Information" Header="정보.." IsCheckable="True"/>
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="77*"/>
+                <ColumnDefinition Width="240*"/>
+                <ColumnDefinition Width="158*"/>
+                <ColumnDefinition Width="317*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock  Grid.Row="0" Grid.Column="0"  Text="{Binding LblConnectionTime}" VerticalAlignment="Center" FontSize="15" Grid.ColumnSpan="2" Margin="0,12"/>
+            <TextBox Text="{Binding TxtSensorCount}" Grid.Row="0" Grid.Column="2" Background="LightGray"/>
+            <GroupBox Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" 
+                      Header="포토 레지스터" Style="{StaticResource MahApps.Styles.GroupBox}"
+                      Height="80" Margin="0,4,0,5">
+                <StackPanel>
+                    <ProgressBar  x:Name="PgbPhotoRegistor"  Height="20" Margin="5"
+                                  Maximum="1023"    Minimum="0"/>
+                    <TextBlock  Text="{Binding LblPhotoRegistor}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30"/>
+                </StackPanel>
+            </GroupBox>
+            <TextBox Text="{Binding P}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="2" 
+                     Background="LightGray" AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                     Style="{StaticResource ConsoleTextBox}"/>
+            <GroupBox Grid.RowSpan="5" Grid.Column="3" Header="포트" Margin="5">
+                <StackPanel>
+                    <ComboBox ItemsSource="{Binding CboSerialPort}" SelectedItem ="{Binding PortName}" Margin="10"/>
+                    <Button Content="CONNECT" Background="Red" Margin="3" Height="20" x:Name="BtnConnect"/>
+                    <Button Content="DISCONNECT" Background="Red" Margin="2" Height="20" x:Name="BtnDisConnect"/>
+                    <Button x:Name="BtnPortValue"  Content="PORT" Background="Red" Margin="3" Height="60"
+                            VerticalAlignment="Center"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Row="2">
+
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Button  Grid.Row="1" Content="Close" Background="Red" Margin="10" Width="100" HorizontalAlignment="Center" x:Name="Close"/>
+                    <Button  Grid.Row="1" Content="Clear" Background="Red" Margin="10" Width="100" HorizontalAlignment="Center" x:Name="Clear"/>
+                </StackPanel>
+            </Border>
+
+
+            <Grid Grid.ColumnSpan="3">
+                <lvc:CartesianChart Grid.Row="2" >
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis MinValue="0" MaxValue="{Binding xCount}" 
+                                  LabelFormatter="{Binding Val}"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis MinValue="0" MaxValue="{Binding maxPhotoVal}"
+                                  LabelFormatter="{Binding photoDatas.Count}"/>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.Series>
+                        <lvc:LineSeries Values="{Binding MyWinformChart}" DataLabels="True"/>
+                    </lvc:CartesianChart.Series>
+                    <lvc:CartesianChart.DataTooltip>
+                        <lvc:DefaultTooltip SelectionMode="SharedYValues" />
+                    </lvc:CartesianChart.DataTooltip>
+
+                </lvc:CartesianChart>
+            </Grid>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
